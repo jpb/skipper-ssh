@@ -1,3 +1,5 @@
+require 'readline'
+
 module Skipper
   class Repl
     attr_accessor :options, :runner
@@ -17,8 +19,9 @@ module Skipper
     private
 
       def repl
-        print '> '
-        puts handle_command(gets.chomp)
+        while command = Readline.readline("> ", true)
+          puts handle_command(command.chomp)
+        end
       end
 
       def handle_command(command)
@@ -41,7 +44,7 @@ module Skipper
 
 help    - this message
 servers - list the servers that commands will be executed on
-exit    - bye bye]
+exit    - bye, bye]
       end
 
       def servers
