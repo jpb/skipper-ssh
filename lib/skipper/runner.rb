@@ -5,7 +5,7 @@ module Skipper
   class Runner
     attr_reader :servers, :options, :cli
 
-    def initialize(servers = [], options = {}, cli)
+    def initialize(servers, options = {}, cli)
       @servers = servers
       @options = options
       @cli = cli
@@ -14,7 +14,7 @@ module Skipper
     end
 
     def run(command)
-      on servers, on_options do
+      on servers.hosts, on_options do
         execute command
       end
     rescue SSHKit::Runner::ExecuteError => e

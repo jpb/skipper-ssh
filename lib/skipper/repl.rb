@@ -2,12 +2,19 @@ require 'readline'
 
 module Skipper
   class Repl
-    attr_accessor :options, :runner, :cli
+    attr_accessor :options, :runner, :cli, :servers
 
     def initialize(options, cli)
       @options = options
       @cli = cli
-      @runner = Skipper::Runner.new(options[:servers], options, cli)
+
+      if options.servers?
+        @servers = Skipper::Servers::Basic.new(options)
+      else
+        @servers = Skipper::Servers::EC2.new(options)
+      end
+
+      @runner = Skipper::Runner.new(@servers, options, cli)
     end
 
     def run
@@ -29,9 +36,9 @@ module Skipper
         case command
         when 'h'
         when 'help'
-          help
+          print_help
         when 'servers'
-          servers
+          print_servers
         when 'quit'
         when 'exit'
           quit
@@ -40,7 +47,7 @@ module Skipper
         end
       end
 
-      def help
+      def print_help
         puts %q[Skipper Help
 
 help    - this message
@@ -48,8 +55,8 @@ servers - list the servers that commands will be executed on
 exit    - bye, bye]
       end
 
-      def servers
-        puts options.servers.join("\n")
+      def print_servers
+        puts servers.to_s
       end
 
       def quit
