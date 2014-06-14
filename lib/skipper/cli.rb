@@ -9,7 +9,7 @@ module Skipper
     method_option :servers, type: :array
     method_option :filter,  type: :hash
     def run_commands
-      puts options
+      Skipper::Banner.print
       Skipper::Repl.new(options).run
     end
 
