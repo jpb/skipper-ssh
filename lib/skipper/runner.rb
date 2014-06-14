@@ -8,6 +8,8 @@ module Skipper
     def initialize(servers = [], options = {})
       @servers = servers
       @options = options
+
+      SSHKit.config.output_verbosity = Logger::DEBUG if options.output?
     end
 
     def run(command)
@@ -15,15 +17,27 @@ module Skipper
         execute command
       end
     rescue SSHKit::Runner::ExecuteError => e
-      puts e
+      puts e unless options.output?
     end
 
     private
 
-      def on_options
-        opts = {}
+      def run_in
+        return options.run_in.to_sym if options.run_in?
 
-        [:in, :limit, :wait].each do |key|
+        if options.limit?
+          :groups
+        elsif options.wait?
+          :sequence
+        else
+          :parallel
+        end
+      end
+
+      def on_options
+        opts = { in: run_in }
+
+        [:limit, :wait].each do |key|
           opts[key] = options[key] if options.key?(key) && !options[key].nil?
         end
 
