@@ -1,4 +1,4 @@
-module Skipper
+  module Skipper
   class Cli < Thor
     include Thor::Actions
 
@@ -8,6 +8,7 @@ module Skipper
     desc 'run_commands', 'Run a command on remote servers'
     method_option :servers, type: :array
     method_option :filter,  type: :hash
+    method_option :user,    type: :string
     def run_commands
       Skipper::Banner.print
       Skipper::Repl.new(options).run

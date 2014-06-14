@@ -1,17 +1,21 @@
+require 'sshkit'
+require 'sshkit/dsl'
+
 module Skipper
   class Runner
-    attr_accessor :servers, :options
+    attr_reader :servers, :options
 
-    def initialize(servers = [], options)
+    def initialize(servers = [], options = {})
       @servers = servers
+      @options = options
     end
 
     def run(command)
       on servers, on_options do
-        as options.user do
-          execute command
-        end
+        execute command
       end
+    rescue SSHKit::Runner::ExecuteError => e
+      puts e
     end
 
     private
@@ -20,7 +24,7 @@ module Skipper
         opts = {}
 
         [:in, :limit, :wait].each do |key|
-          opts[key] = options[key] unless options[key].nil?
+          opts[key] = options[key] if options.key?(key) && !options[key].nil?
         end
 
         opts

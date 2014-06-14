@@ -6,7 +6,7 @@ module Skipper
 
     def initialize(options)
       @options = options
-      @runner = Skipper::Runner.new(['app-test-2.unbounce.com'], options)
+      @runner = Skipper::Runner.new(options[:servers], options)
     end
 
     def run
@@ -20,7 +20,7 @@ module Skipper
 
       def repl
         while command = Readline.readline("> ", true)
-          puts handle_command(command.chomp)
+          handle_command(command.chomp)
         end
       end
 
@@ -40,7 +40,7 @@ module Skipper
       end
 
       def help
-%q[Skipper Help
+        puts %q[Skipper Help
 
 help    - this message
 servers - list the servers that commands will be executed on
@@ -48,7 +48,7 @@ exit    - bye, bye]
       end
 
       def servers
-        "Servers\n\n#{options.servers.join("\n")}"
+        puts options.servers.join("\n")
       end
 
       def quit
