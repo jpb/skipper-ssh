@@ -11,15 +11,15 @@ module Skipper
       end
 
       def instances
-        find_instances
+        @instances ||= find_instances
       end
 
       def hosts
-        instances.map { |instance| instance.ip_address }
+        @hosts ||= instances.map { |instance| instance.ip_address }
       end
 
       def to_s
-        tp instances, include: [ :id, :ip_address ]
+        @to_s ||= details_table
       end
 
       private
@@ -31,9 +31,19 @@ module Skipper
         def find_instances
           instances = ec2.instances
           options.tags.each do |tag, value|
-            instances.filter("tag:{tag}", value)
+            instances.filter("tag:{tag}", value.split(','))
           end
           instances
+        end
+
+        def details_table
+          table = StringIO.new
+          original_stdout, $stdout = $stdout, table
+
+          tp(instances, :id, :ip_address)
+
+          $stdout = original_stdout
+          table.read
         end
 
     end
