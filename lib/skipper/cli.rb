@@ -15,7 +15,7 @@
     method_option :output,   type: :boolean, default: true
     def run_commands
       Skipper::Banner.print
-      Skipper::Repl.new(options).run
+      Skipper::Repl.new(options, self).run
     end
 
   end

@@ -3,11 +3,12 @@ require 'sshkit/dsl'
 
 module Skipper
   class Runner
-    attr_reader :servers, :options
+    attr_reader :servers, :options, :cli
 
-    def initialize(servers = [], options = {})
+    def initialize(servers = [], options = {}, cli)
       @servers = servers
       @options = options
+      @cli = cli
 
       SSHKit.config.output_verbosity = Logger::DEBUG if options.output?
     end
@@ -17,7 +18,7 @@ module Skipper
         execute command
       end
     rescue SSHKit::Runner::ExecuteError => e
-      puts e unless options.output?
+      cli.say e, :red unless options.output?
     end
 
     private

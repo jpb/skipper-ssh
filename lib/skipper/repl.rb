@@ -2,11 +2,12 @@ require 'readline'
 
 module Skipper
   class Repl
-    attr_accessor :options, :runner
+    attr_accessor :options, :runner, :cli
 
-    def initialize(options)
+    def initialize(options, cli)
       @options = options
-      @runner = Skipper::Runner.new(options[:servers], options)
+      @cli = cli
+      @runner = Skipper::Runner.new(options[:servers], options, cli)
     end
 
     def run
