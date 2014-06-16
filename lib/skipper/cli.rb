@@ -1,4 +1,4 @@
-  module Skipper
+module Skipper
   class Cli < Thor
     include Thor::Actions
 
@@ -18,9 +18,17 @@
     method_option :wait,                 type: :string
     method_option :limit,                type: :string
     method_option :output,               type: :boolean,  default: true
+    method_option :file,                 type: :string
     def run_commands
       Skipper::Banner.print
-      Skipper::Repl.new(options, self).run
+
+      if Skipper::File.stdin_has_data?
+        Skipper::File.new(options, self).run($stdin)
+      elsif options.file?
+        Skipper::File.new(options, self).run(::File.new(options.file))
+      else
+        Skipper::Repl.new(options, self).run
+      end
     end
 
   end

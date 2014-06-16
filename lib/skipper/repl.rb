@@ -18,7 +18,6 @@ module Skipper
     end
 
     def run
-      ARGV.clear
       loop do
         repl
       end
