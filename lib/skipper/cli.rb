@@ -18,8 +18,8 @@ module Skipper
     method_option :user,                 type: :string,   default: `whoami`.strip
 
     method_option :run_in,               type: :string
-    method_option :wait,                 type: :string
-    method_option :limit,                type: :string
+    method_option :wait,                 type: :numeric
+    method_option :limit,                type: :numeric
     method_option :output,               type: :boolean,  default: true
 
     method_option :file,                 type: :string

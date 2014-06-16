@@ -43,7 +43,7 @@ module Skipper
         opts = { in: run_in }
 
         [:limit, :wait].each do |key|
-          opts[key] = options[key] if options.key?(key) && !options[key].nil?
+          opts[key] = options[key].to_i if options.send("#{key}?")
         end
 
         opts
