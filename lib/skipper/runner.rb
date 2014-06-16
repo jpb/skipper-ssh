@@ -23,6 +23,8 @@ module Skipper
       end
     rescue SSHKit::Runner::ExecuteError => e
       cli.say e, :red
+    rescue Interrupt
+      puts ''
     end
 
     private

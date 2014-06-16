@@ -19,7 +19,11 @@ module Skipper
 
     def run
       loop do
-        repl
+        begin
+          repl
+        rescue Interrupt
+          puts ''
+        end
       end
     end
 
