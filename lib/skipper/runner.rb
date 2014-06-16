@@ -10,6 +10,10 @@ module Skipper
       @options = options
       @cli = cli
 
+      SSHKit::Backend::Netssh.configure do |ssh|
+        ssh.ssh_options = ssh_options
+      end
+
       SSHKit.config.output_verbosity = Logger::DEBUG if options.output?
     end
 
@@ -18,7 +22,7 @@ module Skipper
         execute command
       end
     rescue SSHKit::Runner::ExecuteError => e
-      cli.say e, :red unless options.output?
+      cli.say e, :red
     end
 
     private
@@ -42,6 +46,14 @@ module Skipper
           opts[key] = options[key] if options.key?(key) && !options[key].nil?
         end
 
+        opts
+      end
+
+      def ssh_options
+        opts = {}
+        opts[:keys]          = [options.identity_file] if options.identiy_file?
+        opts[:user]          = options.user            if options.user?
+        opts[:forward_agent] = options.foward_agent    if options.forward_agent?
         opts
       end
 
