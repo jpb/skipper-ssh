@@ -52,8 +52,8 @@ module Skipper
       def ssh_options
         opts = {}
         opts[:keys]          = [options.identity_file] if options.identiy_file?
-        opts[:user]          = options.user            if options.user?
-        opts[:forward_agent] = options.foward_agent    if options.forward_agent?
+        opts[:user]          = options.user
+        opts[:forward_agent] = options.foward_agent
         opts
       end
 

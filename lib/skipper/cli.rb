@@ -15,7 +15,7 @@ module Skipper
 
     method_option :identity_file,        type: :string
     method_option :forward_agent,        tyep: :boolean,  default: false
-    method_option :user,                 type: :string
+    method_option :user,                 type: :string,   default: `whoami`.strip
 
     method_option :run_in,               type: :string
     method_option :wait,                 type: :string
