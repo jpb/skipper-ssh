@@ -19,7 +19,7 @@ module Skipper
       end
 
       def to_s
-        @to_s ||= details_table
+        @to_s ||= details_table(instances)
       end
 
       private
@@ -29,18 +29,37 @@ module Skipper
         end
 
         def find_instances
-          instances = ec2.instances
-          options.tags.each do |tag, value|
-            instances.filter("tag:{tag}", value.split(','))
-          end
-          instances
+          filtered = filter_tags(ec2.instances)
+          filtered = filter_auto_scaling_groups(filtered)
+          filter_auto_scaling_roles(filtered)
         end
 
-        def details_table
+        def filter_tags(filtered)
+          options.tags.each do |tag, value|
+            filtered = filtered.filter("tag:#{tag}", value.split(','))
+          end
+          filtered
+        end
+
+        def filter_auto_scaling_groups(filtered)
+          options.auto_scaling_groups.each do |value|
+            filtered = filtered.filter('tag:aws:autoscaling:groupName', value)
+          end
+          filtered
+        end
+
+        def filter_auto_scaling_roles(filtered)
+          options.auto_scaling_roles.each do |value|
+            filtered = filtered.filter('tag:aws:autoscaling:role', value)
+          end
+          filtered
+        end
+
+        def details_table(list)
           table = StringIO.new
           original_stdout, $stdout = $stdout, table
 
-          tp(instances, :id, :ip_address)
+          tp(list, :id, :ip_address)
 
           $stdout = original_stdout
           table.read
