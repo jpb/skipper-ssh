@@ -2,10 +2,10 @@ module Skipper
   class Cli < Thor
     include Thor::Actions
 
-    namespace :skipper
-    default_task :run_commands
+    namespace :default
+    default_task :ssh
 
-    desc 'run_commands', 'Run a command on remote servers'
+    desc 'ssh', 'Run a command on remote servers'
     method_option :servers,              type: :array
 
     method_option :region,               type: :string,   default: 'us-east-1'
@@ -23,7 +23,7 @@ module Skipper
     method_option :output,               type: :boolean,  default: true
 
     method_option :file,                 type: :string
-    def run_commands
+    def ssh
       Skipper::Banner.print
 
       if Skipper::File.stdin_has_data?
