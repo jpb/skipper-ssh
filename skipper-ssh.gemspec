@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'skipper/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'skipper'
+  spec.name          = 'skipper-ssh'
   spec.version       = Skipper::VERSION
   spec.authors       = ['James Brennan']
   spec.email         = ['james@jamesbrennan.ca']
