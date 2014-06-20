@@ -3,7 +3,6 @@ require 'sshkit/dsl'
 
 module Skipper
   class Runner
-    attr_reader :servers, :options, :cli
 
     def initialize(servers, options = {}, cli)
       @servers = servers
@@ -28,6 +27,8 @@ module Skipper
     end
 
     private
+
+      attr_reader :servers, :options, :cli
 
       def run_in
         return options.run_in.to_sym if options.run_in?
