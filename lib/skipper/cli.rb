@@ -24,6 +24,8 @@ module Skipper
 
     method_option :file,                 type: :string
     def ssh
+      warn_options unless enough_options?
+
       Skipper::Banner.print
 
       if Skipper::File.stdin_has_data?
@@ -34,6 +36,22 @@ module Skipper
         Skipper::Repl.new(options, self).run
       end
     end
+
+    private
+
+      def warn_options
+        error "You haven't provided me any way to find servers\n\n"
+        help :ssh
+        exit 1
+      end
+
+      def enough_options?
+        options.servers? or aws_options?
+      end
+
+      def aws_options?
+        ! (options.tags.count == 0 and options.auto_scaling_groups.count == 0 and options.auto_scaling_roles.count == 0)
+      end
 
   end
 end
