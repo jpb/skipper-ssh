@@ -2,6 +2,9 @@
 
 A captain for your fleet.
 
+Skipper is a SSH session multiplexer that can run commands in sequence or parallel on multiple
+remote hosts. It achieves this by wrapping Capistrano's [SSHKit](https://github.com/capistrano/sshkit).
+
 ## Basic Usage
 
 ### REPL Commands
@@ -91,8 +94,8 @@ By default, commands will run on all servers in parallel.
   skipper --tags name:value
 
   # By auto scaling group name
-  skipper --auto-scaling-group groupname
+  skipper --auto-scaling-groups groupname
 
   # By auto scaling role
-  skipper --auto-scaling-role rolename
+  skipper --auto-scaling-roles rolename
 ```
