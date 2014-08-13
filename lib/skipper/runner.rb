@@ -20,10 +20,6 @@ module Skipper
       on servers.hosts, on_options do
         execute command
       end
-    rescue SSHKit::Runner::ExecuteError => e
-      cli.say e, :red
-    rescue Interrupt
-      puts ''
     end
 
     private

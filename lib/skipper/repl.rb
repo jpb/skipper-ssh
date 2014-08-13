@@ -21,6 +21,8 @@ module Skipper
       loop do
         begin
           repl
+        rescue SSHKit::Runner::ExecuteError => e
+          cli.say e, :red
         rescue Interrupt
           puts ''
         end
