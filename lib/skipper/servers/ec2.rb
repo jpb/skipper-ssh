@@ -15,7 +15,7 @@ module Skipper
       end
 
       def hosts
-        @hosts ||= instances.map { |instance| instance.ip_address }
+        @hosts ||= instances.map { |instance| instance.ip_address }.compact
       end
 
       def to_s
